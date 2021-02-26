@@ -16,9 +16,13 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { MdExitToApp } from "react-icons/md";
 import { useHistory } from 'react-router-dom';
 
+import logo from '../Resources/logo-removebg-preview.png';
+
 import useStyles from './HomePageCSS'
 import { getUsers, logout } from '../Services/UserServices'
-import { ChatList } from '../Components/ChatList'
+import { getChat} from '../Services/ChatServices'
+
+import { UserList } from '../Components/UserList'
 
 const HomePage = () => {
   
@@ -27,7 +31,7 @@ const HomePage = () => {
   const userName = JSON.parse(localStorage.getItem('user')).username;
 
   const [userList, setUserList] = useState([]);
-
+  const [chat, setChat] = useState(null);
   const classes = useStyles();
 
   const [open, setOpen] = useState(true);
@@ -48,7 +52,10 @@ const HomePage = () => {
   const openChat = (e) => {
     e.preventDefault();  
     const userClicked = e.target.innerHTML;
-    
+    getChat(userName, userClicked).then((response) => {
+       setChat(response.chat);
+       console.log(response.chat);
+    });
   }
 
   useEffect(() => {
@@ -74,7 +81,9 @@ const HomePage = () => {
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Messenger
+            <img src={logo} className={classes.logo} alt=""/>
           </Typography>
+          
           <Typography component="h1" variant="h6" color="inherit" noWrap>
               {userName}
             </Typography>         
@@ -101,12 +110,12 @@ const HomePage = () => {
           </IconButton>
         </div>
         <Divider />
-           <ChatList chatSelection={openChat} chatMembers={userList}/>
+           <UserList chatSelection={openChat} chatMembers={userList}/>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>                  
+          <Grid container spacing={3}>               
           </Grid>
         </Container>
       </main>

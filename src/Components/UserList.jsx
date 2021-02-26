@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-export const ChatList = (props) => {
+export const UserList = (props) => {
 
     const classes = useStyles();
     

@@ -84,6 +84,9 @@ const useStyles = makeStyles((theme) => ({
     },
     loggedUser: {
       marginRight: '0px'
+    },
+    logo: {
+      height: '50px'
     }
   }));
 

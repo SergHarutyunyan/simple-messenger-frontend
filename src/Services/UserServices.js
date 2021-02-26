@@ -1,34 +1,6 @@
 import apiConfig from "../apiConfig";
-
-const handleAPIResponse = (response) => {
-  const { ok, statusText, status } = response
-
-  if (ok) {
-    return response.text()
-      .then(JSON.parse)
-  }
-
-  if (status === 401) {
-    // auto logout if 401 response returned from api
-    logout();
-    window.location.reload(true);
-  }
-
-  return Promise.reject(new Error(statusText))
-}
-
-const buildAuthHeader = () => ({
-  'Authorization': getAuthenticationData()
-})
-
-const getAuthenticationData = () => {
-  // return authorization header with basic auth credentials
-  let user = JSON.parse(localStorage.getItem('user'));
-
-  if (user && user.authenticationData) {
-    return user.authenticationData;
-  }
-}
+import { buildAuthHeader } from "../Helpers/AuthHeader"
+import { handleAPIResponse } from "../Helpers/HandleAPIRespone"
 
 export const login = (email, password) => {
   const requestOptions = {
@@ -73,7 +45,7 @@ export const logout = () => localStorage.removeItem("user");
 export const getUsers = (currentUser) => {
   const requestOptions = {
     method: "GET",
-    headers: buildAuthHeader()
+    headers: { 'Authorization' : buildAuthHeader() }
   };
 
   return fetch(`${apiConfig.Url}account/all?user=${currentUser}`, requestOptions)
