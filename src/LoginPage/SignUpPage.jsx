@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -16,6 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Alert } from 'react-bootstrap';
 
 import { register } from '../Services/UserServices';
+import logo from '../Resources/logo-removebg-preview.png';
 
 function Copyright() {
   return (
@@ -47,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  logo: {
+    height: "50px"
   }
 }));
 
@@ -74,7 +76,7 @@ export default function SignUp() {
     else{
         setError('');
     }
-  }, [confirmPassword]);
+  }, [confirmPassword, password]);
 
 
   const handleSubmit = (e) => {
@@ -82,13 +84,14 @@ export default function SignUp() {
 
     if(email && password && confirmPassword && !error)
     {
-        register(email, username, password).then(
-            user => {                  
-              if(user) {
-                history.push({
-                  pathname: '/' });            
-              };
-            });       
+      register(email, username, password).then(
+          user => {                  
+            if(user) {
+              history.push({
+                pathname: '/' });            
+            };
+          }
+      );       
     }
   }
 
@@ -96,9 +99,7 @@ export default function SignUp() {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <img src={logo} className={classes.logo} alt=""/>
         <Typography component="h1" variant="h5" color="initial">
           Sign Up
         </Typography>
@@ -153,7 +154,7 @@ export default function SignUp() {
             value={confirmPassword}
             onChange={handleConfirmPass}          
           />
-              <Alert show={error} variant="danger">{error}</Alert>
+          <Alert show={error} variant="danger">{error}</Alert>
           <Button
             type="submit"
             fullWidth

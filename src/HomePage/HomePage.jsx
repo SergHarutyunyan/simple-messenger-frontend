@@ -20,22 +20,22 @@ import logo from '../Resources/logo-removebg-preview.png';
 
 import useStyles from './HomePageCSS'
 import { getUsers, logout } from '../Services/UserServices'
-import { getChat} from '../Services/ChatServices'
+import { createConnection, closeHub } from '../Services/ChatServices'
 
 import { UserList } from '../Components/UserList'
 
 const HomePage = () => {
   
   let history = useHistory();
-
+  const classes = useStyles();
+  
   const userName = JSON.parse(localStorage.getItem('user')).username;
 
   const [userList, setUserList] = useState([]);
-  const [chat, setChat] = useState(null);
-  const classes = useStyles();
-
+  
+  const [connection, setConnection] = useState(null);
+  
   const [open, setOpen] = useState(true);
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -43,25 +43,31 @@ const HomePage = () => {
     setOpen(false);
   };
 
-  const handleLogout = (e) => {
+  const handleLogout = (e) => {  
     e.preventDefault();  
+        
+    if(connection) {
+      closeHub(connection);
+    
     logout();
+
     history.push('/login');
+    }
   }
 
   const openChat = (e) => {
     e.preventDefault();  
-    const userClicked = e.target.innerHTML;
-    getChat(userName, userClicked).then((response) => {
-       setChat(response.chat);
-       console.log(response.chat);
-    });
+    
+
   }
 
   useEffect(() => {
-      getUsers(userName).then((users) => {
-        const data = users.userList;             
-        setUserList(data)
+    setConnection(createConnection());       
+  }, []);
+
+  useEffect(() => {
+      getUsers(userName).then((users) => {    
+        setUserList(users.userList);
       });
   }, []);
 
@@ -115,7 +121,8 @@ const HomePage = () => {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>               
+          <Grid container spacing={3}>       
+
           </Grid>
         </Container>
       </main>
