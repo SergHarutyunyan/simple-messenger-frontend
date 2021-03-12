@@ -1,85 +1,50 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',
-    },
-    toolbar: {
-      paddingRight: 24, // keep right padding when drawer closed
+      position: 'absolute',
+      width: '100%',
+      height: '100%'
     },
     toolbarIcon: {
-      display: 'flex',
+      position: 'relative',
+      width: '200px',
       alignItems: 'center',
-      justifyContent: 'flex-end',
-      padding: '0 8px',
       ...theme.mixins.toolbar,
     },
+    toolbar: {
+      height: '10%',
+      marginLeft: '30px'
+    },
     appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-    },
-    appBarShift: {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
-    menuButton: {
-      marginRight: 36,
-    },
-    menuButtonHidden: {
-      display: 'none',
-    },
-    title: {
-      flexGrow: 1,
+      width: '100%',
+      zIndex: theme.zIndex.drawer + 1
     },
     drawerPaper: {
+      width: '200px',
       position: 'relative',
-      whiteSpace: 'nowrap',
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      whiteSpace: 'nowrap'
     },
-    drawerPaperClose: {
-      overflowX: 'hidden',
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      width: theme.spacing(7),
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9),
-      },
-    },
-    appBarSpacer: theme.mixins.toolbar,
     content: {
-      flexGrow: 1,
-      height: '100vh',
-      overflow: 'auto',
+      display: 'flex',
+      flexDirection: 'col',
+      width: '100%'
+    },
+    body: {
+      position: 'relative',
+      height: '85%',
+      marginTop: '70px'
     },
     container: {
-      paddingTop: theme.spacing(4),
-      paddingBottom: theme.spacing(4),
+      minWidth: 'calc(100% - 200px)',
+      marginLeft: '200px'
     },
     paper: {
-      padding: theme.spacing(2),
       display: 'flex',
       overflow: 'auto',
       flexDirection: 'column',
     },
-    fixedHeight: {
-      height: 240,
-    },
-    contacts:{
+    contactsIcon:{
       marginRight: '15px'
     },
     loggedUser: {
@@ -87,7 +52,11 @@ const useStyles = makeStyles((theme) => ({
     },
     logo: {
       height: '50px'
-    }
+    },
+    title: {
+      flexGrow: 1,
+    },
+   
   }));
 
   export default useStyles;
