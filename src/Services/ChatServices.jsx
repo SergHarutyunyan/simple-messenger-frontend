@@ -11,10 +11,14 @@ export const createConnection = () => {
             .build();
         
     connection.start()
-        .then(result => {
-            console.log('Connected!');
-            })
-        .catch(e => console.log('Connection failed: ', e))    
+    .then(result => {
+        console.log('Connected!');
+
+        connection.on('ReceiveMessage', message => {
+           console.log(message);
+        });
+    })
+    .catch(e => console.log('Connection failed: ', e));
 
     return connection;
 }
@@ -46,9 +50,5 @@ export const getChatHistory = (user1, user2) => {
             return response.chat;
           }            
         });
-}
-
-export const sendMessage = (from, to, message) => {
-    
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import Typography from '@material-ui/core/Typography';
@@ -43,8 +43,7 @@ const useStyles = makeStyles(() => ({
     chat: {
         position: 'absolute',
         width: 'calc(100% - 250px)',
-        height: 'calc(90% - 40px)',
-        display: 'table',
+        maxHeight: '85%',
         overflowY: 'auto'
     },
     rowUI: {
@@ -114,7 +113,8 @@ export const Chat = (props) => {
                                     {element.messageText}
                                 </Typography>    
                                 <Moment className={classes.timedate} format="hh:mm">{element.sendTime}</Moment>
-                            </div>                                                         
+                            </div>        
+                            <br /> <br />                                                 
                         </>
                     )}   
                 </div>      
@@ -127,7 +127,7 @@ export const Chat = (props) => {
     }
     else{
         return (
-            <div id="chat">
+            <div className={classes.chat}>
                     
             </div>
         );

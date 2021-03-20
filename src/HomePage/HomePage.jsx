@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React, { useState, useEffect  } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,7 +8,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import MenuIcon from '@material-ui/icons/Menu';
+
+import apiConfig from "../apiConfig";
+import { HubConnectionBuilder} from '@microsoft/signalr';
+import { buildAuthHeader } from "../Helpers/AuthHeader"
 
 import { MdExitToApp } from "react-icons/md";
 import { useHistory } from 'react-router-dom';
@@ -19,7 +20,7 @@ import logo from '../Resources/logo-removebg-preview.png';
 
 import useStyles from './HomePageCSS'
 import { getUsers, logout } from '../Services/UserServices'
-import { createConnection, closeHub, getChatHistory } from '../Services/ChatServices'
+import { closeHub, getChatHistory } from '../Services/ChatServices'
 
 import { UserList } from '../Components/UserList'
 import { Chat } from '../Components/Chat'
@@ -56,20 +57,48 @@ const HomePage = () => {
     getChatHistory(loggedInUser, userCLicked).then((result) => setChatHistory(result));
   }
 
-  const sendMessage = (message) => { 
-    //sendMessage(loggedInUser, currentChatUser, message);
-    console.log(message)
+  const sendMessage = async (message) => { 
+    //await submitMessage(connection, loggedInUser, currentChatUser, message);
+    if(connection) {
+      var response = await connection.invoke('SendChatMessage', message, loggedInUser, currentChatUser);
+      setChatHistory((chatHistory) => [
+        ...chatHistory,
+        {from: response.from.username, to: response.to.username, messageText: response.messageText, sendTime: response.sendTime.toString("HH:mm")}
+      ]);
+    } 
   }
 
   useEffect(() => {
-    setConnection(createConnection());       
-  }, []);
+    const connection = new HubConnectionBuilder()
+            .withUrl(`${apiConfig.Url}chathub?access_token=${buildAuthHeader()}`)
+            .withAutomaticReconnect()
+            .build();
+        
+    connection.start()
+    .then(result => {
+        console.log('Connected!');
+
+        connection.on('ReceiveMessage', response => {
+          if(response) {
+            setChatHistory((chatHistory) => {
+              return [
+              ...chatHistory,
+              {from: response.from, to: response.to, messageText: response.messageText, sendTime: response.sendTime.toString("HH:mm")}
+            ]
+          });
+          }        
+        });
+    })
+    .catch(e => console.log('Connection failed: ', e));
+
+    setConnection(connection);
+  }, [])
 
   useEffect(() => {
       getUsers(loggedInUser).then((users) => {    
         setUserList(users.userList);
       });
-  }, []);
+  }, [loggedInUser]);
 
   return (
     <div className={classes.root}>
