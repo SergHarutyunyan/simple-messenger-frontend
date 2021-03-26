@@ -102,6 +102,13 @@ export const Chat = (props) => {
         setMessage('');
     };
 
+    const onEnterPress = (e) => {
+        if(e.keyCode === 13 && e.shiftKey === false) {
+          e.preventDefault();
+          onSave(e);
+        }
+      }
+
     if(history) {
         return (   
             <>            
@@ -119,7 +126,7 @@ export const Chat = (props) => {
                     )}   
                 </div>      
                 <div className={classes.inputLen}>                 
-                    <textarea value={message} onChange={handleInput} maxLength="300" className={classes.input}></textarea>
+                    <textarea value={message} onChange={handleInput} maxLength="300" className={classes.input} onKeyDown={onEnterPress}></textarea>
                     <Button onClick={onSave} className={classes.sendMessage}><BiSend className={classes.sendIcon}></BiSend></Button>
                 </div>                                            
             </>
