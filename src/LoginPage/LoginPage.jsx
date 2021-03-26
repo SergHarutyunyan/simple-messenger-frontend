@@ -12,6 +12,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link as LinkR, useHistory } from 'react-router-dom';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Alert } from 'react-bootstrap';
+
 import { login } from '../Services/UserServices';
 import logo from '../Resources/logo-removebg-preview.png';
 
@@ -68,17 +71,13 @@ export default function LoginPage() {
 
     if(email && password)
     {
-        login(email, password).then(
-            user => {                  
-              if(user){
+        login(email, password).then((user) => {                      
+              if(user) {
                 history.push({
                   pathname: '/'
                 });
               }
-              else{
-                  setError("hey");
-              }
-        });
+        }).catch((response) => { response.then((errmsg) => { setError(errmsg.message); }) });
     }       
   }
 
@@ -91,6 +90,7 @@ export default function LoginPage() {
           Sign in
         </Typography>
         <form className={classes.form} onSubmit={handleLogin}>
+          <Alert show={error} variant="danger">{error}</Alert>
           <TextField
             variant="outlined"
             margin="normal"

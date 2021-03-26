@@ -10,15 +10,17 @@ export const login = (email, password) => {
   };
 
   return fetch(`${apiConfig.Url}account/login`, requestOptions)
-    .then(handleAPIResponse)
+    .then(handleAPIResponse)   
     .then((user) => {
       if (user) {
         user.authdata = window.btoa(email + ":" + user.username + ":" + password);
         localStorage.setItem("user", JSON.stringify(user));
       }
-
       return user;
-    });
+    }).catch((errorResponse) =>
+    { 
+      return Promise.reject(errorResponse);
+    })
 }
 
 export const register = (email, username, password) => {

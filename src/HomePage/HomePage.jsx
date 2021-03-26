@@ -95,9 +95,15 @@ const HomePage = () => {
   }, [])
 
   useEffect(() => {
+    getUsers(loggedInUser).then((users) => {    
+      setUserList(users.userList);
+    });
+    setInterval(() => {
       getUsers(loggedInUser).then((users) => {    
         setUserList(users.userList);
       });
+    }, 10000); 
+
   }, [loggedInUser]);
 
   return (
