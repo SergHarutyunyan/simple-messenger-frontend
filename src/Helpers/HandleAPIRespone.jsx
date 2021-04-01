@@ -1,23 +1,25 @@
 import { logout } from "../Services/UserServices"
 
 export const handleAPIResponse = (response) => {
-    const { ok, statusText, status } = response
-  
-    if (ok) {
-      return response.text()
-        .then(JSON.parse);
-    }
-  
-    if (status === 401) {
-      // auto logout if 401 response returned from api
-      logout();
-      window.location.reload(true);
+    const { statusText, status} = response
+
+    if (status === 401) {        
+        logout();
+        window.location.reload(true);
+        return Promise.resolve();
     }
 
-    if(status === 400) { 
-        var errmsg = response.text().then(JSON.parse).then((err) => { return err; })       
-        return Promise.reject(errmsg);      
+    if(status !== 200 && status !== 400)   {
+        return Promise.reject(statusText);
     }
-  
-    return Promise.reject(new Error(statusText))
-  }
+
+    return response.text()
+        .then(JSON.parse)
+        .then((response) => 
+        { 
+            if(status === 400) 
+                return Promise.reject(new Error(response.message));
+            if(status === 200)
+                return response;        
+        }); 
+}

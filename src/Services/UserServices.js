@@ -17,14 +17,11 @@ export const login = (email, password) => {
         localStorage.setItem("user", JSON.stringify(user));
       }
       return user;
-    }).catch((errorResponse) =>
-    { 
-      return Promise.reject(errorResponse);
     })
+  
 }
 
 export const register = (email, username, password) => {
-
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },

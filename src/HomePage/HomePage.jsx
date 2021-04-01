@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -31,6 +31,8 @@ const HomePage = () => {
   const classes = useStyles();
   
   const loggedInUser = JSON.parse(localStorage.getItem('user')).username;
+  const intervalID = useRef(null);
+
   const [currentChatUser, setcurrentChatUser] = useState();
   const [userList, setUserList] = useState([]);
   
@@ -43,7 +45,7 @@ const HomePage = () => {
         
     if(connection) {
       closeHub(connection);
-    
+
     logout();
 
     history.push('/login');
@@ -94,16 +96,18 @@ const HomePage = () => {
     setConnection(connection);
   }, [])
 
-  useEffect(() => {
-    getUsers(loggedInUser).then((users) => {    
-      setUserList(users.userList);
-    });
-    setInterval(() => {
+  useEffect(() => {   
+    if(loggedInUser) {
       getUsers(loggedInUser).then((users) => {    
         setUserList(users.userList);
       });
-    }, 10000); 
-
+      intervalID.current = setInterval(() => {
+       getUsers(loggedInUser).then((users) => {    
+          setUserList(users.userList);
+        });
+      }, 10000); 
+    }
+    return () => clearInterval(intervalID.current);
   }, [loggedInUser]);
 
   return (

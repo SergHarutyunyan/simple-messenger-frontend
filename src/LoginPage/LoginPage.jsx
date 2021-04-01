@@ -70,14 +70,16 @@ export default function LoginPage() {
     e.preventDefault();
 
     if(email && password)
-    {
-        login(email, password).then((user) => {                      
+       {
+        login(email, password)
+        .then((user) => {                      
               if(user) {
                 history.push({
                   pathname: '/'
                 });
               }
-        }).catch((response) => { response.then((errmsg) => { setError(errmsg.message); }) });
+        })
+        .catch((error) => { setError(error.message); });
     }       
   }
 
