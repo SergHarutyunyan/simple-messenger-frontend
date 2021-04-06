@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -13,7 +11,7 @@ import Container from '@material-ui/core/Container';
 import { Link as LinkR, useHistory } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Alert } from 'react-bootstrap';
+import { Alert as BootAlert } from 'react-bootstrap';
 
 import { login } from '../Services/UserServices';
 import logo from '../Resources/logo-removebg-preview.png';
@@ -61,25 +59,49 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPass] = useState('');
-  const [error, setError] = useState('');
+  const [wrongLogin, setError] = useState('');
+  const [invalidEmail, setInvalidEmail] = useState('');
+  const [invalidPassword, setInvalidPassword] = useState('');
 
   const handleEmail = (e) => { setEmail(e.target.value);  }
   const handlePass = (e) => { setPass(e.target.value);  } 
 
+  const validateInput = () => {
+    let validationPassed = true;
+
+    if(!new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(email)) {
+      setInvalidEmail("Invalid Email format");
+      validationPassed = false;
+    } 
+    else setInvalidEmail('');
+    
+    if(password.length < 3) {
+      setInvalidPassword("Password length must be at least 3 characters");
+      validationPassed = false;
+    }  
+    else setInvalidPassword('');
+
+    return validationPassed;    
+  }
+
   const handleLogin = (e) => {
     e.preventDefault();
 
-    if(email && password)
-       {
-        login(email, password)
-        .then((user) => {                      
-              if(user) {
-                history.push({
-                  pathname: '/'
-                });
-              }
-        })
-        .catch((error) => { setError(error.message); });
+    if(validateInput())
+    {
+      login(email, password)
+      .then((user) => {                      
+            if(user) {
+              history.push({
+                pathname: '/'
+              });
+            }
+      })
+      .catch((error) => { setError(error.message); });
+    }
+    else {
+      setError('');
+      return;
     }       
   }
 
@@ -92,7 +114,7 @@ export default function LoginPage() {
           Sign in
         </Typography>
         <form className={classes.form} onSubmit={handleLogin}>
-          <Alert show={error} variant="danger">{error}</Alert>
+          <BootAlert show={wrongLogin} variant="danger">{wrongLogin}</BootAlert>
           <TextField
             variant="outlined"
             margin="normal"
@@ -103,8 +125,9 @@ export default function LoginPage() {
             name="email"
             autoComplete="email"
             value={email}
-            onChange={handleEmail}  
+            onChange={handleEmail} 
           />
+          <BootAlert show={invalidEmail} variant="danger">{invalidEmail}</BootAlert>
           <TextField
             variant="outlined"
             margin="normal"
@@ -118,9 +141,7 @@ export default function LoginPage() {
             value={password}
             onChange={handlePass}  
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me" />
+          <BootAlert show={invalidPassword} variant="danger">{invalidPassword}</BootAlert>
           <Button
             type="submit"
             fullWidth
@@ -130,13 +151,13 @@ export default function LoginPage() {
           > Sign In </Button>
           <Grid container>
             <Grid item xs>
-              <LinkR href="#" variant="body2">
+              <LinkR to="/forgot" variant="body2">
                 Forgot password?
               </LinkR>
             </Grid>
             <Grid item>
               <LinkR to="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
+                Don't have an account? Sign Up
               </LinkR>
             </Grid>
           </Grid>

@@ -8,19 +8,22 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 const useStyles = makeStyles(() => ({
     group: {
         display: 'grid',
-        whiteSpace : 'nowrap'
+        gridTemplateColumns: '150px 50px'
     },
     list: {
         display: 'flex',
-        justifyContent: 'center',
-        textTransform: 'none'
+        textTransform: 'none',
+        width: '200px',
+        textAlign: 'left'
     },
     status: {
-        margin: '0 0 0 15px',
+        margin: '5px',
         height: '25px'
     },
     username: {
-        fontSize: '18px;'
+        fontSize: '18px',
+        width: 'calc(100% - 50px)',
+        marginRight: '50px'
     },
     connected: {
         color: 'green'
@@ -43,11 +46,11 @@ export const UserList = (props) => {
                     {chatMembers.map(element => 
                         <>                    
                             <Button onClick={chatSelection} className={classes.list}>
-                                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.username}>
-                                    {element.username}
-                                </Typography>
-                                <FiberManualRecordIcon className={`${classes.status} ${element.connected ? classes.connected : classes.disconnected}`}/>   
-                            </Button>                           
+                                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.username}>
+                                        {element.username}
+                                    </Typography>                                                          
+                            </Button>   
+                            <FiberManualRecordIcon className={`${classes.status} ${element.connected ? classes.connected : classes.disconnected}`}/>                        
                         </>
                     )}    
                 </div>            
