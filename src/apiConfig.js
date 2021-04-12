@@ -1,5 +1,5 @@
 const apiConfig = {
-    "Url": "https://localhost:5001/api/"
+    "Url": "https://hsmessengerserver.herokuapp.com/api/"
 }
 
 export default apiConfig;
