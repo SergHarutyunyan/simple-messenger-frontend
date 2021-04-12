@@ -1,28 +1,59 @@
 {
-  "name": "client",
+  "name": "chat-app-client",
+  "description": "Frnt end for chat application.",
   "version": "0.1.0",
-  "private": true,
+  "author": "Sergey Harutyunyan",
+  "bugs": {
+    "url": "https://github.com/SergHarutyunyan/simple-messenger-frontend"
+  },
+  "contributors": [
+    {
+      "name": "Sergey Harutyunyan",
+      "email": "harser09@gmail.com"
+    },
+    {
+      "name": "Narek Hovhannisyan",
+      "email": "narekgilmour@gmail.com"
+    }
+  ],
   "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
-    "@microsoft/signalr": "^5.0.3",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.6.3",
-    "bootstrap": "^4.6.0",
-    "moment": "^2.29.1",
-    "moment-timezone": "^0.5.33",
-    "react": "^17.0.1",
-    "react-bootstrap": "^1.4.3",
-    "react-dom": "^17.0.1",
-    "react-icons": "^4.2.0",
-    "react-moment": "^1.1.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.2",
-    "reactstrap": "^8.9.0",
-    "web-vitals": "^1.1.0"
+    "@material-ui/core": "4.11.3",
+    "@material-ui/icons": "4.11.2",
+    "@microsoft/signalr": "5.0.5",
+    "@testing-library/jest-dom": "5.11.10",
+    "@testing-library/react": "11.2.6",
+    "@testing-library/user-event": "13.1.2",
+    "bootstrap": "4.6.0",
+    "moment": "2.29.1",
+    "moment-timezone": "0.5.33",
+    "react": "17.0.2",
+    "react-bootstrap": "1.5.2",
+    "react-dom": "17.0.2",
+    "react-icons": "4.2.0",
+    "react-moment": "1.1.1",
+    "react-router-dom": "5.2.0",
+    "react-scripts": "4.0.3",
+    "reactstrap": "8.9.0",
+    "web-vitals": "1.1.1"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "7.13.8",
+    "@babel/plugin-syntax-jsx": "7.10.4",
+    "eslint": "7.23.0",
+    "eslint-config-standard": "16.0.2",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-promise": "5.1.0",
+    "eslint-plugin-react": "7.23.2",
+    "prettier": "2.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergHarutyunyan/simple-messenger-frontend"
   },
   "scripts": {
+    "lint": "./node_modules/.bin/eslint ./src ./test --fix",
+    "lint-no-fix": "./node_modules/.bin/eslint ./test",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -45,5 +76,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.js"
+  },
+  "license": "ISC"
 }
